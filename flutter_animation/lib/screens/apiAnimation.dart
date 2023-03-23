@@ -41,11 +41,14 @@ class _ApiAnimationScreenState extends State<ApiAnimationScreen>
                 ),
               ],
             ),
-            Container(
+            SizedBox(
+              width: 200,
+              height: 350,
               child: Lottie.asset(
                 'assets/animations/72-favourite-app-icon.json',
                 controller: _controller,
                 repeat: true,
+                fit: BoxFit.fill,
               ),
             ),
             Center(
