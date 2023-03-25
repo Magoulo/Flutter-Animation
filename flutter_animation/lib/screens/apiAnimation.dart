@@ -37,15 +37,15 @@ class _ApiAnimationScreenState extends State<ApiAnimationScreen>
             Column(
               children: const <Widget>[
                 Text(
-                  'API Animation',
+                  'Api Animation',
                 ),
               ],
             ),
             SizedBox(
               width: 200,
               height: 350,
-              child: Lottie.asset(
-                'assets/animations/72-favourite-app-icon.json',
+              child: Lottie.network(
+                'https://assets7.lottiefiles.com/datafiles/0BklE7L1HhdHa4v/data.json',
                 controller: _controller,
                 repeat: true,
                 fit: BoxFit.fill,
