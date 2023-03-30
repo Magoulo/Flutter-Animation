@@ -44,8 +44,8 @@ class _ApiAnimationScreenState extends State<ApiAnimationScreen>
             SizedBox(
               width: 200,
               height: 350,
-              child: Lottie.network(
-                'https://assets7.lottiefiles.com/datafiles/0BklE7L1HhdHa4v/data.json',
+              child: Lottie.asset(
+                'assets/animations/72-favourite-app-icon.json',
                 controller: _controller,
                 repeat: true,
                 fit: BoxFit.fill,

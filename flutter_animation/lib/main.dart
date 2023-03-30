@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animation/screens/apiAnimation.dart';
-import 'screens/customAnimation.dart';
+import 'package:flutter_animation/screens/customAnimation.dart';
 
 void main() {
   runApp(const MyApp());
