@@ -34,23 +34,17 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Column(
+            Stack(
               children: const <Widget>[
                 Text(
                   'Custom Animation',
                 ),
               ],
             ),
-            SizedBox(
-              width: 200,
-              height: 350,
-              child: Lottie.asset(
-                'assets/animations/72-favourite-app-icon.json',
-                controller: _controller,
-                repeat: true,
-                fit: BoxFit.fill,
-              ),
-            ),
+            TweenAnimationBuilder(
+                tween: star, duration: duration, builder: builder),
+            TweenAnimationBuilder(
+                tween: dots, duration: duration, builder: builder),
             Center(
               child: ElevatedButton(
                 onPressed: () {
