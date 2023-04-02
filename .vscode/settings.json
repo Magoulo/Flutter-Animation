@@ -1,4 +1,4 @@
 {
     "cmake.configureOnOpen": true,
-    "cmake.sourceDirectory": "${workspaceFolder}/flutter_animation/linux"
+    "cmake.sourceDirectory": "${workspaceFolder}/linux"
 }
