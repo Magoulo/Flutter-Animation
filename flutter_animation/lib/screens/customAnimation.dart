@@ -140,10 +140,18 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
               scaleX: scaleXValue,
               child: Transform.translate(
                 offset: Offset(0, positionValue),
-                child: Container(
-                  width: 50,
-                  height: 50,
-                  color: Colors.blue,
+                child: TweenAnimationBuilder<Color?>(
+                  tween: ColorTween(begin: Colors.blue, end: Colors.purple),
+                  duration: const Duration(seconds: 2),
+                  builder: (_, Color? color, __) {
+                    return Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                          color: color, borderRadius: BorderRadius.circular(8)),
+                    );
+                  },
+                  child: child,
                 ),
               ),
             );
