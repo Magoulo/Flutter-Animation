@@ -16,6 +16,7 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
   late final TweenSequence<double> positionTweenSequence;
   late final TweenSequence<double> scaleYTweenSequence;
   late final TweenSequence<double> scaleXTweenSequence;
+  late final TweenSequence<Color?> colorTweenSequence;
   final screenHeight = 300.0;
 
   @override
@@ -25,6 +26,7 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
       duration: const Duration(seconds: 2),
       vsync: this,
     );
+
     positionTweenSequence = TweenSequence<double>(
       [
         TweenSequenceItem<double>(
@@ -54,6 +56,14 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
         ),
       ],
     );
+
+    colorTweenSequence = TweenSequence<Color?>([
+      TweenSequenceItem<Color?>(
+        tween: ColorTween(begin: Colors.blue, end: Colors.purple),
+        weight: 0.2,
+      ),
+    ]);
+
     scaleYTweenSequence = TweenSequence<double>(
       [
         TweenSequenceItem<double>(
@@ -140,18 +150,10 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
               scaleX: scaleXValue,
               child: Transform.translate(
                 offset: Offset(0, positionValue),
-                child: TweenAnimationBuilder<Color?>(
-                  tween: ColorTween(begin: Colors.blue, end: Colors.purple),
-                  duration: const Duration(seconds: 2),
-                  builder: (_, Color? color, __) {
-                    return Container(
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                          color: color, borderRadius: BorderRadius.circular(8)),
-                    );
-                  },
-                  child: child,
+                child: Container(
+                  width: 50,
+                  height: 50,
+                  color: colorTweenSequence.animate(controller).value,
                 ),
               ),
             );
@@ -162,8 +164,22 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
   }
 }
 
+/*
+TweenAnimationBuilder<Color?>(
+                  tween: ColorTween(begin: Colors.blue, end: Colors.purple),
+                  duration: const Duration(seconds: 2),
+                  builder: (_, Color? color, __) {
+                    return Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                          color: color, borderRadius: BorderRadius.circular(8)),
+                    );
+                  },
+                ),
+*/
 
- /* TweenAnimationBuilder(
+/* TweenAnimationBuilder(
                 tween:
                     Tween<Offset>(begin: Offset(150, 0), end: Offset(150, _y)),
                 duration: const Duration(seconds: 1),
