@@ -13,23 +13,46 @@ class CustomAnimationScreen extends StatefulWidget {
 class _CustomAnimationScreenState extends State<CustomAnimationScreen>
     with TickerProviderStateMixin {
   late final AnimationController _controller;
-  double value = 150;
-  double _x = 0;
-  double _y = 0;
-  Color _color = Colors.blue;
+  late final Animation<double> _animation;
 
   @override
   void initState() {
     super.initState();
 
-    _controller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 1000));
+    _controller =
+        AnimationController(vsync: this, duration: const Duration(seconds: 5));
+
+    _animation = TweenSequence<double>(
+      <TweenSequenceItem<double>>[
+        TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 5.0, end: 10.0)
+              .chain(CurveTween(curve: Curves.ease)),
+          weight: 40.0,
+        ),
+        TweenSequenceItem<double>(
+          tween: ConstantTween<double>(10.0),
+          weight: 20.0,
+        ),
+        TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 10.0, end: 5.0)
+              .chain(CurveTween(curve: Curves.ease)),
+          weight: 40.0,
+        ),
+      ],
+    ).animate(_controller);
+
+    _controller.repeat();
   }
 
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  void _startAnimation() {
+    _controller.reset();
+    _controller.forward();
   }
 
   @override
@@ -46,32 +69,16 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
                   'Api Animation',
                 ),
               ),*/
-              TweenAnimationBuilder(
-                tween:
-                    Tween<Offset>(begin: Offset(150, 0), end: Offset(150, _y)),
-                duration: const Duration(seconds: 1),
-                curve: Curves.easeInOut,
-                builder: (context, Offset offset, child) {
-                  return Positioned(
-                    left: offset.dx,
-                    top: offset.dy,
-                    child: TweenAnimationBuilder(
-                      tween: Tween<Color>(begin: Colors.blue, end: _color),
-                      duration: const Duration(seconds: 0),
-                      builder: (context, Color color, child) {
-                        return Container(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                              color: color,
-                              borderRadius: BorderRadius.circular(8)),
-                        );
-                      },
-                      child: child,
-                    ),
+
+              AnimatedBuilder(
+                animation: _animation,
+                builder: (context, child) {
+                  return Container(
+                    width: _animation.value * 50,
+                    height: _animation.value * 50,
+                    color: Colors.blue,
                   );
                 },
-                child: Container(),
               ),
               Positioned(
                 left: MediaQuery.of(context).size.width /
@@ -82,14 +89,7 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
                   width: 100,
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        // _x = _x == 0 ? 100 : 0;
-                        _y = _y == 0 ? 400 : 0;
-                        _color =
-                            _color == Colors.blue ? Colors.red : Colors.blue;
-                      });
-                    },
+                    onPressed: _startAnimation,
                     child: const Text('Play'),
                   ),
                 ),
@@ -99,3 +99,12 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
     );
   }
 }
+
+
+/*Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                              color: color,
+                              borderRadius: BorderRadius.circular(8)),
+                        ); */
