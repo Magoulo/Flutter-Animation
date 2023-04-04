@@ -62,6 +62,22 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
         tween: ColorTween(begin: Colors.blue, end: Colors.purple),
         weight: 0.2,
       ),
+      TweenSequenceItem<Color?>(
+        tween: ColorTween(begin: Colors.purple, end: Colors.red),
+        weight: 0.2,
+      ),
+      TweenSequenceItem<Color?>(
+        tween: ColorTween(begin: Colors.red, end: Colors.yellow),
+        weight: 0.2,
+      ),
+      TweenSequenceItem<Color?>(
+        tween: ColorTween(begin: Colors.yellow, end: Colors.green),
+        weight: 0.2,
+      ),
+      TweenSequenceItem<Color?>(
+        tween: ColorTween(begin: Colors.green, end: Colors.blue),
+        weight: 0.2,
+      ),
     ]);
 
     scaleYTweenSequence = TweenSequence<double>(
