@@ -36,12 +36,24 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 0, end: 400)
               .chain(CurveTween(curve: Curves.easeInOut)),
-          weight: 40.0,
+          weight: 25.0,
         ),
         TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 400, end: 200)
+          tween: Tween<double>(begin: 400, end: 400)
               .chain(CurveTween(curve: Curves.easeInOut)),
-          weight: 60.0,
+          weight: 10.0,
+        ),
+        TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 400, end: 200),
+          weight: 20.0,
+        ),
+        TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 200, end: 400),
+          weight: 20.0,
+        ),
+        TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 400, end: 400),
+          weight: 25.0,
         ),
       ],
     ).animate(_positionController);
@@ -50,37 +62,121 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
       <TweenSequenceItem<Color?>>[
         TweenSequenceItem<Color?>(
           tween: ColorTween(begin: Colors.red, end: Colors.blue),
-          weight: 40.0,
+          weight: 50.0,
         ),
         TweenSequenceItem<Color?>(
           tween: ColorTween(begin: Colors.blue, end: Colors.green),
-          weight: 60.0,
+          weight: 50.0,
         ),
       ],
     ).animate(_colorController);
 
     _scaleYTweenSequence = TweenSequence<double>(
       [
+        // 10%
+        TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 50, end: 60),
+          weight: 10,
+        ),
+        // 20%
+        TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 60, end: 70),
+          weight: 10,
+        ),
+        // 30%
+        TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 70, end: 30),
+          weight: 10,
+        ),
+        // 40%
+        TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 30, end: 50),
+          weight: 10,
+        ),
+        // 50%
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 50, end: 50),
-          weight: 100,
+          weight: 10,
+        ),
+        // 60%
+        TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 50, end: 50),
+          weight: 10,
+        ),
+        // 70%
+        TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 50, end: 50),
+          weight: 10,
+        ),
+        // 80%
+        TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 50, end: 80),
+          weight: 10,
+        ),
+        // 90%
+        TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 50, end: 50),
+          weight: 10,
+        ),
+        // 100%
+        TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 50, end: 50),
+          weight: 10,
         ),
       ],
     ).animate(_scaleController);
 
     _scaleXTweenSequence = TweenSequence<double>(
       [
+        // 10%
         TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 50, end: 30),
-          weight: 20,
+          tween: Tween<double>(begin: 50, end: 40),
+          weight: 10,
         ),
+        // 20%
         TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 30, end: 20),
-          weight: 15,
+          tween: Tween<double>(begin: 40, end: 30),
+          weight: 10,
         ),
+        // 30%
         TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 20, end: 80),
-          weight: 30,
+          tween: Tween<double>(begin: 30, end: 80),
+          weight: 10,
+        ),
+        // 40%
+        TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 80, end: 60),
+          weight: 10,
+        ),
+        // 50%
+        TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 60, end: 40),
+          weight: 10,
+        ),
+        // 60%
+        TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 40, end: 50),
+          weight: 10,
+        ),
+        // 70%
+        TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 50, end: 50),
+          weight: 10,
+        ),
+        // 80%
+        TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 50, end: 80),
+          weight: 10,
+        ),
+        // 90%
+        TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 50, end: 50),
+          weight: 10,
+        ),
+        // 100%
+        TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 50, end: 50),
+          weight: 10,
         ),
       ],
     ).animate(_scaleController);
@@ -126,7 +222,8 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
                 builder: (context, child) {
                   return Positioned(
                     top: _positionAnimation.value,
-                    left: 150,
+                    left: MediaQuery.of(context).size.width / 2 -
+                        _scaleXTweenSequence.value / 2,
                     child: Container(
                       width: _scaleXTweenSequence.value,
                       height: _scaleYTweenSequence.value,
