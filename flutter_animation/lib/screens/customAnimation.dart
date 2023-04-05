@@ -12,47 +12,98 @@ class CustomAnimationScreen extends StatefulWidget {
 
 class _CustomAnimationScreenState extends State<CustomAnimationScreen>
     with TickerProviderStateMixin {
-  late final AnimationController _controller;
-  late final Animation<double> _animation;
+  late final AnimationController _positionController;
+  late final AnimationController _colorController;
+  late final AnimationController _scaleController;
+  late final Animation<double> _positionAnimation;
+  late final Animation<Color?> _colorAnimation;
+  late final Animation<double> _scaleYTweenSequence;
+  late final Animation<double> _scaleXTweenSequence;
 
   @override
   void initState() {
     super.initState();
 
-    _controller =
+    _positionController =
+        AnimationController(vsync: this, duration: const Duration(seconds: 5));
+    _colorController =
+        AnimationController(vsync: this, duration: const Duration(seconds: 5));
+    _scaleController =
         AnimationController(vsync: this, duration: const Duration(seconds: 5));
 
-    _animation = TweenSequence<double>(
+    _positionAnimation = TweenSequence<double>(
       <TweenSequenceItem<double>>[
         TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 5.0, end: 10.0)
-              .chain(CurveTween(curve: Curves.ease)),
+          tween: Tween<double>(begin: 0, end: 400)
+              .chain(CurveTween(curve: Curves.easeInOut)),
           weight: 40.0,
         ),
         TweenSequenceItem<double>(
-          tween: ConstantTween<double>(10.0),
-          weight: 20.0,
-        ),
-        TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 10.0, end: 5.0)
-              .chain(CurveTween(curve: Curves.ease)),
-          weight: 40.0,
+          tween: Tween<double>(begin: 400, end: 200)
+              .chain(CurveTween(curve: Curves.easeInOut)),
+          weight: 60.0,
         ),
       ],
-    ).animate(_controller);
+    ).animate(_positionController);
 
-    _controller.repeat();
+    _colorAnimation = TweenSequence<Color?>(
+      <TweenSequenceItem<Color?>>[
+        TweenSequenceItem<Color?>(
+          tween: ColorTween(begin: Colors.red, end: Colors.blue),
+          weight: 40.0,
+        ),
+        TweenSequenceItem<Color?>(
+          tween: ColorTween(begin: Colors.blue, end: Colors.green),
+          weight: 60.0,
+        ),
+      ],
+    ).animate(_colorController);
+
+    _scaleYTweenSequence = TweenSequence<double>(
+      [
+        TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 50, end: 50),
+          weight: 100,
+        ),
+      ],
+    ).animate(_scaleController);
+
+    _scaleXTweenSequence = TweenSequence<double>(
+      [
+        TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 50, end: 30),
+          weight: 20,
+        ),
+        TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 30, end: 20),
+          weight: 15,
+        ),
+        TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 20, end: 80),
+          weight: 30,
+        ),
+      ],
+    ).animate(_scaleController);
+
+    // _controller.forward();
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _positionController.dispose();
+    _colorController.dispose();
+    _scaleController.dispose();
     super.dispose();
   }
 
   void _startAnimation() {
-    _controller.reset();
-    _controller.forward();
+    _positionController.reset();
+    _colorController.reset();
+    _scaleController.reset();
+
+    _positionController.forward();
+    _colorController.forward();
+    _scaleController.forward();
   }
 
   @override
@@ -69,14 +120,20 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
                   'Api Animation',
                 ),
               ),*/
-
               AnimatedBuilder(
-                animation: _animation,
+                animation: Listenable.merge(
+                    [_positionController, _colorController, _scaleController]),
                 builder: (context, child) {
-                  return Container(
-                    width: _animation.value * 50,
-                    height: _animation.value * 50,
-                    color: Colors.blue,
+                  return Positioned(
+                    top: _positionAnimation.value,
+                    left: 150,
+                    child: Container(
+                      width: _scaleXTweenSequence.value,
+                      height: _scaleYTweenSequence.value,
+                      decoration: BoxDecoration(
+                          color: _colorAnimation.value,
+                          borderRadius: BorderRadius.circular(8)),
+                    ),
                   );
                 },
               ),
