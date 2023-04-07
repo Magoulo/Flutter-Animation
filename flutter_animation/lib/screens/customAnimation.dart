@@ -15,21 +15,26 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
   late final AnimationController _positionController;
   late final AnimationController _colorController;
   late final AnimationController _scaleController;
+  late final AnimationController _fadeController;
+
   late final Animation<double> _positionAnimation;
   late final Animation<Color?> _colorAnimation;
   late final Animation<double> _scaleYTweenSequence;
   late final Animation<double> _scaleXTweenSequence;
+  late final Animation<double> _fadeAnimation;
 
   @override
   void initState() {
     super.initState();
 
     _positionController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 3));
+        AnimationController(vsync: this, duration: const Duration(seconds: 5));
     _colorController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 3));
+        AnimationController(vsync: this, duration: const Duration(seconds: 5));
     _scaleController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 3));
+        AnimationController(vsync: this, duration: const Duration(seconds: 5));
+    _fadeController =
+        AnimationController(vsync: this, duration: const Duration(seconds: 5));
 
     _positionAnimation = TweenSequence<double>(
       <TweenSequenceItem<double>>[
@@ -71,54 +76,62 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
       ],
     ).animate(_colorController);
 
+    _fadeAnimation = TweenSequence<double>(
+      <TweenSequenceItem<double>>[
+        TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 0.5, end: 0.25)
+              .chain(CurveTween(curve: Curves.easeInOut)),
+          weight: 25.0,
+        ),
+        TweenSequenceItem<double>(
+          tween: Tween(begin: 0.25, end: 0.75),
+          weight: 25.0,
+        ),
+        TweenSequenceItem<double>(
+          tween: Tween(begin: 0.75, end: 0.0),
+          weight: 50.0,
+        ),
+      ],
+    ).animate(_fadeController);
+
     _scaleYTweenSequence = TweenSequence<double>(
       [
-        // 10%
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 50, end: 60),
           weight: 10,
         ),
-        // 20%
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 60, end: 70),
           weight: 10,
         ),
-        // 30%
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 70, end: 20),
           weight: 5,
         ),
-        // 40%
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 20, end: 40),
           weight: 15,
         ),
-        // 50%
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 40, end: 50),
           weight: 10,
         ),
-        // 60%
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 50, end: 60),
           weight: 10,
         ),
-        // 70%
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 60, end: 50),
           weight: 10,
         ),
-        // 80%
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 50, end: 30),
           weight: 10,
         ),
-        // 90%
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 30, end: 50),
           weight: 10,
         ),
-        // 100%
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 50, end: 50),
           weight: 10,
@@ -128,60 +141,48 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
 
     _scaleXTweenSequence = TweenSequence<double>(
       [
-        // 10%
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 50, end: 40),
           weight: 10,
         ),
-        // 20%
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 40, end: 30),
           weight: 10,
         ),
-        // 30%
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 30, end: 80),
           weight: 5,
         ),
-        // 40%
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 80, end: 60),
           weight: 15,
         ),
-        // 50%
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 60, end: 50),
           weight: 10,
         ),
-        // 60%
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 50, end: 40),
           weight: 10,
         ),
-        // 70%
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 40, end: 40),
           weight: 10,
         ),
-        // 80%
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 40, end: 70),
           weight: 10,
         ),
-        // 90%
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 70, end: 50),
           weight: 10,
         ),
-        // 100%
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 50, end: 50),
           weight: 10,
         ),
       ],
     ).animate(_scaleController);
-
-    // _controller.forward();
   }
 
   @override
@@ -206,51 +207,63 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: Stack(
-            //crossAxisAlignment: CrossAxisAlignment.stretch,
-            //mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              /*const Align(
+        body: Stack(children: [
+          /*const Align(
                 alignment: FractionalOffset.topCenter,
                 child: Text(
                   'Api Animation',
                 ),
               ),*/
-              AnimatedBuilder(
-                animation: Listenable.merge(
-                    [_positionController, _colorController, _scaleController]),
-                builder: (context, child) {
-                  return Positioned(
-                    top: _positionAnimation.value -
-                        _scaleYTweenSequence.value +
-                        50,
-                    left: MediaQuery.of(context).size.width / 2 -
-                        _scaleXTweenSequence.value / 2,
-                    child: Container(
-                      width: _scaleXTweenSequence.value,
-                      height: _scaleYTweenSequence.value,
-                      decoration: BoxDecoration(
-                          color: _colorAnimation.value,
-                          borderRadius: BorderRadius.circular(8)),
-                    ),
-                  );
-                },
-              ),
-              Positioned(
-                left: MediaQuery.of(context).size.width /
-                        2 - /*(object width = 100)*/
-                    100 / 2,
-                bottom: 0 + 50,
-                child: SizedBox(
-                  width: 100,
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: _startAnimation,
-                    child: const Text('Play'),
-                  ),
+          AnimatedBuilder(
+            animation: Listenable.merge(
+                [_positionController, _colorController, _scaleController]),
+            builder: (context, child) {
+              return Positioned(
+                top: _positionAnimation.value - _scaleYTweenSequence.value + 50,
+                left: MediaQuery.of(context).size.width / 2 -
+                    _scaleXTweenSequence.value / 2,
+                child: Container(
+                  width: _scaleXTweenSequence.value,
+                  height: _scaleYTweenSequence.value,
+                  decoration: BoxDecoration(
+                      color: _colorAnimation.value,
+                      borderRadius: BorderRadius.circular(8)),
                 ),
+              );
+            },
+          ),
+          AnimatedBuilder(
+            animation: Listenable.merge([_fadeAnimation]),
+            builder: (context, child) {
+              return Positioned(
+                  left: MediaQuery.of(context).size.width / 2 - 100 / 2,
+                  top: 450,
+                  child: SizedBox(
+                    width: 100,
+                    height: 2,
+                    child: Container(
+                      color: Colors.black.withOpacity(_fadeAnimation.value),
+                      height: 2,
+                      width: 100,
+                    ),
+                  ));
+            },
+          ),
+          Positioned(
+            left:
+                MediaQuery.of(context).size.width / 2 - /*(object width = 100)*/
+                    100 / 2,
+            bottom: 0 + 50,
+            child: SizedBox(
+              width: 100,
+              height: 50,
+              child: ElevatedButton(
+                onPressed: _startAnimation,
+                child: const Text('Play'),
               ),
-            ]),
+            ),
+          ),
+        ]),
       ),
     );
   }
