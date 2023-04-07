@@ -79,8 +79,10 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
     _opacityAnimation = TweenSequence<double>([
       TweenSequenceItem(tween: Tween(begin: 0.0, end: 0.0), weight: 24),
       TweenSequenceItem(tween: Tween(begin: 0.0, end: 1.0), weight: 5),
-      TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.0), weight: 5),
-      TweenSequenceItem(tween: Tween(begin: 0.0, end: 0.0), weight: 67),
+      TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.0), weight: 5), //67
+      TweenSequenceItem(tween: Tween(begin: 0.0, end: 0.0), weight: 42),
+      TweenSequenceItem(tween: Tween(begin: 0.0, end: 1.0), weight: 5),
+      TweenSequenceItem(tween: Tween(begin: 1.0, end: 1.0), weight: 20),
     ]).animate(_colorController);
 
     _scaleYTweenSequence = TweenSequence<double>(
@@ -228,17 +230,17 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
             animation: Listenable.merge([_opacityController]),
             builder: (context, child) {
               return Positioned(
-                  left: MediaQuery.of(context).size.width / 2 - 100 / 2,
+                  left: MediaQuery.of(context).size.width / 2 - 150 / 2,
                   top: 450,
                   child: SizedBox(
-                    width: 100,
+                    width: 150,
                     height: 2,
                     child: FadeTransition(
                         opacity: _opacityAnimation,
                         child: Container(
                           color: Colors.black,
                           height: 2,
-                          width: 100,
+                          width: 150,
                         )),
                   ));
             },
