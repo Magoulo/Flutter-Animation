@@ -44,13 +44,16 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
           weight: 25.0,
         ),
         TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 400, end: 400)
-              .chain(CurveTween(curve: Curves.easeInOut)),
+          tween: Tween<double>(begin: 400, end: 400),
           weight: 5.0,
         ),
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 400, end: 300),
-          weight: 25.0,
+          weight: 20.0,
+        ),
+        TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 300, end: 300),
+          weight: 5.0,
         ),
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 300, end: 400),
@@ -66,12 +69,24 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
     _colorAnimation = TweenSequence<Color?>(
       <TweenSequenceItem<Color?>>[
         TweenSequenceItem<Color?>(
-          tween: ColorTween(begin: Colors.red, end: Colors.blue),
-          weight: 50.0,
+          tween: ColorTween(begin: Colors.blue, end: Colors.purple),
+          weight: 0.2,
         ),
         TweenSequenceItem<Color?>(
-          tween: ColorTween(begin: Colors.blue, end: Colors.green),
-          weight: 50.0,
+          tween: ColorTween(begin: Colors.purple, end: Colors.red),
+          weight: 0.2,
+        ),
+        TweenSequenceItem<Color?>(
+          tween: ColorTween(begin: Colors.red, end: Colors.yellow),
+          weight: 0.2,
+        ),
+        TweenSequenceItem<Color?>(
+          tween: ColorTween(begin: Colors.yellow, end: Colors.green),
+          weight: 0.2,
+        ),
+        TweenSequenceItem<Color?>(
+          tween: ColorTween(begin: Colors.green, end: Colors.blue),
+          weight: 0.2,
         ),
       ],
     ).animate(_colorController);
@@ -83,7 +98,7 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
       TweenSequenceItem(tween: Tween(begin: 0.0, end: 0.0), weight: 42),
       TweenSequenceItem(tween: Tween(begin: 0.0, end: 1.0), weight: 5),
       TweenSequenceItem(tween: Tween(begin: 1.0, end: 1.0), weight: 20),
-    ]).animate(_colorController);
+    ]).animate(_positionController);
 
     _scaleYTweenSequence = TweenSequence<double>(
       [
@@ -95,30 +110,35 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
           tween: Tween<double>(begin: 60, end: 70),
           weight: 10,
         ),
+        //Längst ner, står still för blob
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 70, end: 20),
           weight: 5,
         ),
+        //Påväg upp
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 20, end: 40),
-          weight: 15,
+          weight: 10,
         ),
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 40, end: 50),
-          weight: 10,
+          weight: 15,
+        ),
+        //50% och 5% till top
+        TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 50, end: 35),
+          weight: 5,
+        ),
+        //Påväg ner
+        TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 35, end: 60),
+          weight: 20,
         ),
         TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 50, end: 60),
-          weight: 10,
+          tween: Tween<double>(begin: 60, end: 30),
+          weight: 5,
         ),
-        TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 60, end: 50),
-          weight: 10,
-        ),
-        TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 50, end: 30),
-          weight: 10,
-        ),
+        //Når botten
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 30, end: 50),
           weight: 10,
@@ -140,30 +160,35 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
           tween: Tween<double>(begin: 40, end: 30),
           weight: 10,
         ),
+        //Längst ner, står still för blob
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 30, end: 80),
           weight: 5,
         ),
+        //Påväg upp
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 80, end: 60),
+          weight: 10,
+        ),
+        TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 60, end: 40),
           weight: 15,
         ),
+        //50% och 5% till top
         TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 60, end: 50),
-          weight: 10,
+          tween: Tween<double>(begin: 40, end: 60),
+          weight: 5,
+        ),
+        //Påväg ner
+        TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 60, end: 45),
+          weight: 20,
         ),
         TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 50, end: 40),
-          weight: 10,
+          tween: Tween<double>(begin: 45, end: 70),
+          weight: 5,
         ),
-        TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 40, end: 40),
-          weight: 10,
-        ),
-        TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 40, end: 70),
-          weight: 10,
-        ),
+        //Når botten
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 70, end: 50),
           weight: 10,
@@ -173,7 +198,7 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
           weight: 10,
         ),
       ],
-    ).animate(_scaleController);
+    ).animate(_colorController);
   }
 
   @override
