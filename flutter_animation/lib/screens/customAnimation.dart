@@ -15,13 +15,13 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
   late final AnimationController _positionController;
   late final AnimationController _colorController;
   late final AnimationController _scaleController;
-  late final AnimationController _fadeController;
+  late final AnimationController _opacityController;
 
   late final Animation<double> _positionAnimation;
   late final Animation<Color?> _colorAnimation;
   late final Animation<double> _scaleYTweenSequence;
   late final Animation<double> _scaleXTweenSequence;
-  late final Animation<double> _fadeAnimation;
+  late final Animation<double> _opacityAnimation;
 
   @override
   void initState() {
@@ -33,7 +33,7 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
         AnimationController(vsync: this, duration: const Duration(seconds: 5));
     _scaleController =
         AnimationController(vsync: this, duration: const Duration(seconds: 5));
-    _fadeController =
+    _opacityController =
         AnimationController(vsync: this, duration: const Duration(seconds: 5));
 
     _positionAnimation = TweenSequence<double>(
@@ -76,23 +76,12 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
       ],
     ).animate(_colorController);
 
-    _fadeAnimation = TweenSequence<double>(
-      <TweenSequenceItem<double>>[
-        TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 0.5, end: 0.25)
-              .chain(CurveTween(curve: Curves.easeInOut)),
-          weight: 25.0,
-        ),
-        TweenSequenceItem<double>(
-          tween: Tween(begin: 0.25, end: 0.75),
-          weight: 25.0,
-        ),
-        TweenSequenceItem<double>(
-          tween: Tween(begin: 0.75, end: 0.0),
-          weight: 50.0,
-        ),
-      ],
-    ).animate(_fadeController);
+    _opacityAnimation = TweenSequence<double>([
+      TweenSequenceItem(tween: Tween(begin: 0.0, end: 0.0), weight: 24),
+      TweenSequenceItem(tween: Tween(begin: 0.0, end: 1.0), weight: 5),
+      TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.0), weight: 5),
+      TweenSequenceItem(tween: Tween(begin: 0.0, end: 0.0), weight: 67),
+    ]).animate(_colorController);
 
     _scaleYTweenSequence = TweenSequence<double>(
       [
@@ -190,6 +179,7 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
     _positionController.dispose();
     _colorController.dispose();
     _scaleController.dispose();
+    _opacityController.dispose();
     super.dispose();
   }
 
@@ -197,10 +187,12 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
     _positionController.reset();
     _colorController.reset();
     _scaleController.reset();
+    _opacityController.reset();
 
     _positionController.forward();
     _colorController.forward();
     _scaleController.forward();
+    _opacityController.forward();
   }
 
   @override
@@ -233,7 +225,7 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
             },
           ),
           AnimatedBuilder(
-            animation: Listenable.merge([_fadeAnimation]),
+            animation: Listenable.merge([_opacityController]),
             builder: (context, child) {
               return Positioned(
                   left: MediaQuery.of(context).size.width / 2 - 100 / 2,
@@ -241,11 +233,13 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
                   child: SizedBox(
                     width: 100,
                     height: 2,
-                    child: Container(
-                      color: Colors.black.withOpacity(_fadeAnimation.value),
-                      height: 2,
-                      width: 100,
-                    ),
+                    child: FadeTransition(
+                        opacity: _opacityAnimation,
+                        child: Container(
+                          color: Colors.black,
+                          height: 2,
+                          width: 100,
+                        )),
                   ));
             },
           ),
@@ -268,12 +262,3 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
     );
   }
 }
-
-
-/*Container(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                              color: color,
-                              borderRadius: BorderRadius.circular(8)),
-                        ); */
