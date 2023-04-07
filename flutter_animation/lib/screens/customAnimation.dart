@@ -1,7 +1,4 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 
 class CustomAnimationScreen extends StatefulWidget {
   const CustomAnimationScreen({super.key});
@@ -12,29 +9,53 @@ class CustomAnimationScreen extends StatefulWidget {
 
 class _CustomAnimationScreenState extends State<CustomAnimationScreen>
     with TickerProviderStateMixin {
-  late final AnimationController _positionController;
-  late final AnimationController _colorController;
-  late final AnimationController _scaleController;
-  late final AnimationController _opacityController;
+  late final AnimationController _controller;
 
-  late final Animation<double> _positionAnimation;
   late final Animation<Color?> _colorAnimation;
+  late final Animation<double> _opacityAnimation;
+  late final Animation<double> _positionAnimation;
   late final Animation<double> _scaleYTweenSequence;
   late final Animation<double> _scaleXTweenSequence;
-  late final Animation<double> _opacityAnimation;
 
   @override
   void initState() {
     super.initState();
 
-    _positionController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 5));
-    _colorController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 5));
-    _scaleController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 5));
-    _opacityController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 5));
+    _controller =
+        AnimationController(vsync: this, duration: const Duration(seconds: 4));
+
+    _colorAnimation = TweenSequence<Color?>(
+      <TweenSequenceItem<Color?>>[
+        TweenSequenceItem<Color?>(
+          tween: ColorTween(begin: Colors.blue, end: Colors.purple),
+          weight: 0.2,
+        ),
+        TweenSequenceItem<Color?>(
+          tween: ColorTween(begin: Colors.purple, end: Colors.red),
+          weight: 0.2,
+        ),
+        TweenSequenceItem<Color?>(
+          tween: ColorTween(begin: Colors.red, end: Colors.yellow),
+          weight: 0.2,
+        ),
+        TweenSequenceItem<Color?>(
+          tween: ColorTween(begin: Colors.yellow, end: Colors.green),
+          weight: 0.2,
+        ),
+        TweenSequenceItem<Color?>(
+          tween: ColorTween(begin: Colors.green, end: Colors.blue),
+          weight: 0.2,
+        ),
+      ],
+    ).animate(_controller);
+    _opacityAnimation = TweenSequence<double>([
+      TweenSequenceItem(tween: Tween(begin: 0.0, end: 0.0), weight: 24),
+      TweenSequenceItem(tween: Tween(begin: 0.0, end: 1.0), weight: 5),
+      TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.0), weight: 5),
+      TweenSequenceItem(tween: Tween(begin: 0.0, end: 0.0), weight: 42),
+      TweenSequenceItem(tween: Tween(begin: 0.0, end: 1.0), weight: 5),
+      TweenSequenceItem(tween: Tween(begin: 1.0, end: 1.0), weight: 20),
+    ]).animate(_controller);
 
     _positionAnimation = TweenSequence<double>(
       <TweenSequenceItem<double>>[
@@ -64,41 +85,7 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
           weight: 25.0,
         ),
       ],
-    ).animate(_positionController);
-
-    _colorAnimation = TweenSequence<Color?>(
-      <TweenSequenceItem<Color?>>[
-        TweenSequenceItem<Color?>(
-          tween: ColorTween(begin: Colors.blue, end: Colors.purple),
-          weight: 0.2,
-        ),
-        TweenSequenceItem<Color?>(
-          tween: ColorTween(begin: Colors.purple, end: Colors.red),
-          weight: 0.2,
-        ),
-        TweenSequenceItem<Color?>(
-          tween: ColorTween(begin: Colors.red, end: Colors.yellow),
-          weight: 0.2,
-        ),
-        TweenSequenceItem<Color?>(
-          tween: ColorTween(begin: Colors.yellow, end: Colors.green),
-          weight: 0.2,
-        ),
-        TweenSequenceItem<Color?>(
-          tween: ColorTween(begin: Colors.green, end: Colors.blue),
-          weight: 0.2,
-        ),
-      ],
-    ).animate(_colorController);
-
-    _opacityAnimation = TweenSequence<double>([
-      TweenSequenceItem(tween: Tween(begin: 0.0, end: 0.0), weight: 24),
-      TweenSequenceItem(tween: Tween(begin: 0.0, end: 1.0), weight: 5),
-      TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.0), weight: 5), //67
-      TweenSequenceItem(tween: Tween(begin: 0.0, end: 0.0), weight: 42),
-      TweenSequenceItem(tween: Tween(begin: 0.0, end: 1.0), weight: 5),
-      TweenSequenceItem(tween: Tween(begin: 1.0, end: 1.0), weight: 20),
-    ]).animate(_positionController);
+    ).animate(_controller);
 
     _scaleYTweenSequence = TweenSequence<double>(
       [
@@ -148,7 +135,7 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
           weight: 10,
         ),
       ],
-    ).animate(_scaleController);
+    ).animate(_controller);
 
     _scaleXTweenSequence = TweenSequence<double>(
       [
@@ -198,28 +185,18 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
           weight: 10,
         ),
       ],
-    ).animate(_colorController);
+    ).animate(_controller);
   }
 
   @override
   void dispose() {
-    _positionController.dispose();
-    _colorController.dispose();
-    _scaleController.dispose();
-    _opacityController.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
   void _startAnimation() {
-    _positionController.reset();
-    _colorController.reset();
-    _scaleController.reset();
-    _opacityController.reset();
-
-    _positionController.forward();
-    _colorController.forward();
-    _scaleController.forward();
-    _opacityController.forward();
+    _controller.reset();
+    _controller.forward();
   }
 
   @override
@@ -227,15 +204,15 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
     return MaterialApp(
       home: Scaffold(
         body: Stack(children: [
-          /*const Align(
-                alignment: FractionalOffset.topCenter,
-                child: Text(
-                  'Api Animation',
-                ),
-              ),*/
+          Positioned(
+            left: MediaQuery.of(context).size.width / 2 - 115 / 2,
+            top: 160,
+            child: const Text(
+              'Custom Animation',
+            ),
+          ),
           AnimatedBuilder(
-            animation: Listenable.merge(
-                [_positionController, _colorController, _scaleController]),
+            animation: _controller,
             builder: (context, child) {
               return Positioned(
                 top: _positionAnimation.value - _scaleYTweenSequence.value + 50,
@@ -246,16 +223,18 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
                   height: _scaleYTweenSequence.value,
                   decoration: BoxDecoration(
                       color: _colorAnimation.value,
-                      borderRadius: BorderRadius.circular(8)),
+                      borderRadius: BorderRadius.circular(10)),
                 ),
               );
             },
           ),
           AnimatedBuilder(
-            animation: Listenable.merge([_opacityController]),
+            animation: _controller,
             builder: (context, child) {
               return Positioned(
-                  left: MediaQuery.of(context).size.width / 2 - 150 / 2,
+                  left: MediaQuery.of(context).size.width /
+                          2 - /*(object width = 150)*/
+                      150 / 2,
                   top: 450,
                   child: SizedBox(
                     width: 150,
