@@ -17,7 +17,7 @@ class _ApiAnimationScreenState extends State<ApiAnimationScreen>
     super.initState();
 
     _controller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 1000));
+        vsync: this, duration: const Duration(milliseconds: 4000));
   }
 
   @override
@@ -30,33 +30,38 @@ class _ApiAnimationScreenState extends State<ApiAnimationScreen>
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.center,
+        body: Stack(
           children: [
-            Column(
-              children: const <Widget>[
-                Text(
-                  'Api Animation',
-                ),
-              ],
-            ),
-            SizedBox(
-              width: 200,
-              height: 350,
-              child: Lottie.asset(
-                'assets/animations/72-favourite-app-icon.json',
-                controller: _controller,
-                repeat: true,
-                fit: BoxFit.fill,
+            Positioned(
+              left: MediaQuery.of(context).size.width / 2 - 90 / 2,
+              top: 160,
+              child: const Text(
+                'Api Animation',
               ),
             ),
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  _controller.forward();
-                },
-                child: const Text('Play'),
+            Positioned(
+              top: 0,
+              left: MediaQuery.of(context).size.width / 2 - 170 / 2,
+              child: Lottie.asset(
+                'assets/animations/lottieAnimation.json',
+                controller: _controller,
+                repeat: true,
+              ),
+            ),
+            Positioned(
+              left: MediaQuery.of(context).size.width /
+                      2 - /*(object width = 100)*/
+                  100 / 2,
+              bottom: 0 + 50,
+              child: SizedBox(
+                width: 100,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: () {
+                    _controller.forward();
+                  },
+                  child: const Text('Play'),
+                ),
               ),
             ),
           ],
