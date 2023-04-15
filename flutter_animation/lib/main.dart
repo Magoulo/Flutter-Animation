@@ -41,7 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Column(
             children: const <Widget>[
               Text(
-                'Animation Experiment',
+                'Flutter Animation Experiment',
               ),
             ],
           ),

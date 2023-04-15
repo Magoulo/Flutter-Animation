@@ -205,7 +205,7 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
       home: Scaffold(
         body: Stack(children: [
           Positioned(
-            left: MediaQuery.of(context).size.width / 2 - 140 / 2,
+            left: MediaQuery.of(context).size.width / 2 - 150 / 2,
             top: 160,
             child: const Text(
               'Flutter Custom Animation',

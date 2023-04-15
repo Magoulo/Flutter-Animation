@@ -33,10 +33,10 @@ class _ApiAnimationScreenState extends State<ApiAnimationScreen>
         body: Stack(
           children: [
             Positioned(
-              left: MediaQuery.of(context).size.width / 2 - 90 / 2,
+              left: MediaQuery.of(context).size.width / 2 - 125 / 2,
               top: 160,
               child: const Text(
-                'Api Animation',
+                'Flutter Api Animation',
               ),
             ),
             Positioned(
