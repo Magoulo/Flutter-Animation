@@ -20,9 +20,20 @@ class _CustomAnimationScreenState extends State<CustomAnimationScreen>
   @override
   void initState() {
     super.initState();
+    int loopCount = 0;
 
     _controller =
-        AnimationController(vsync: this, duration: const Duration(seconds: 4));
+        AnimationController(vsync: this, duration: const Duration(seconds: 4))
+          ..addStatusListener((status) {
+            if (status == AnimationStatus.completed) {
+              loopCount++;
+              if (loopCount < 15) {
+                _controller.forward(from: 0.0);
+              } else {
+                loopCount = 0;
+              }
+            }
+          });
 
     _colorAnimation = TweenSequence<Color?>(
       <TweenSequenceItem<Color?>>[

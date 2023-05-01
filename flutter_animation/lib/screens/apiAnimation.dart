@@ -16,8 +16,20 @@ class _ApiAnimationScreenState extends State<ApiAnimationScreen>
   void initState() {
     super.initState();
 
-    _controller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 4000));
+    int loopCount = 0;
+
+    _controller =
+        AnimationController(vsync: this, duration: const Duration(seconds: 4))
+          ..addStatusListener((status) {
+            if (status == AnimationStatus.completed) {
+              loopCount++;
+              if (loopCount < 15) {
+                _controller.forward(from: 0.0);
+              } else {
+                loopCount = 0;
+              }
+            }
+          });
   }
 
   @override
